@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Moriz — короткий тест сайта</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap">
+<style>
+/* Один экран — один шаг. Палитра moriz.ai: тёплая бумага, почти чёрный, красный акцент. */
+:root{
+  --bg:#F1ECE6; --surface:#fff; --soft:#F6F2EE; --fg:#1A1612; --muted:#6F6660; --line:#E6DED6;
+  --accent:#FF3B30; --accent-soft:#FFEDEA; --on-accent:#fff; --good:#299954;
+  --font:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+:root{color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:radial-gradient(800px 500px at 90% -10%,rgba(255,120,90,.16),transparent 70%),var(--bg);color:var(--fg);font-family:var(--font);font-size:16px;line-height:1.5;min-height:100vh}
+button,textarea,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top-in{max-width:760px;margin:0 auto;padding:12px max(16px,env(safe-area-inset-left));display:flex;align-items:center;gap:12px}
+.logo{font-weight:800;display:flex;align-items:center;gap:8px}
+.logo i{width:20px;height:20px;border-radius:50%;background:var(--accent)}
+.bar{flex:1;height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar b{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+.stepn{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+main{max-width:760px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-left)) 120px}
+h1{font-size:clamp(26px,5vw,36px);line-height:1.15;font-weight:800;letter-spacing:-.01em;margin:0 0 12px;text-wrap:balance}
+h2{font-size:20px;font-weight:700;margin:0 0 8px}
+p{margin:0 0 12px}
+.muted{color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 10px 28px rgba(77,31,13,.06)}
+.stack{display:flex;flex-direction:column;gap:16px}
+.q{display:flex;flex-direction:column;gap:8px}
+.q label{font-weight:600}
+textarea{width:100%;min-height:96px;resize:vertical;border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--surface);font-size:15px}
+.choices{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:10px 16px;cursor:pointer;font-weight:600;font-size:15px}
+.chip[aria-pressed="true"]{background:var(--fg);border-color:var(--fg);color:var(--bg)}
+.scale .chip{min-width:48px;text-align:center}
+.btn{border:0;border-radius:999px;padding:14px 26px;font-weight:700;cursor:pointer;background:var(--accent);color:var(--on-accent);font-size:16px}
+.btn.ghost{background:var(--surface);color:var(--fg);border:1px solid var(--line)}
+.btn:disabled{opacity:.4;cursor:default}
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:6;background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(8px);border-top:1px solid var(--line)}
+.nav-in{max-width:760px;margin:0 auto;padding:12px max(16px,env(safe-area-inset-left)) calc(12px + env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;gap:12px}
+/* мини-копия первого экрана */
+.hero{background:radial-gradient(70% 60% at 50% 0%,var(--accent-soft),transparent 70%),var(--surface);border:1px solid var(--line);border-radius:20px;padding:36px 20px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px}
+.hero .eyebrow{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);opacity:.8}
+.hero.small .eyebrow{font-size:9px}
+/* мини-копия блока боли */
+.painsec{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:22px 18px;text-align:left;display:flex;flex-direction:column;gap:10px}
+.painsec h4{font-size:clamp(19px,4vw,24px);line-height:1.15;font-weight:800;letter-spacing:-.01em;margin:0;text-wrap:balance}
+.painsec h4 .acc{color:var(--accent)}
+.painsec .lead{color:var(--muted);font-size:14px;margin:0}
+.painsec .seg{display:inline-flex;align-self:flex-start;background:var(--soft);border-radius:999px;padding:3px;gap:3px;font-size:12px;font-weight:600}
+.painsec .seg span{padding:5px 12px;border-radius:999px;color:var(--muted)}
+.painsec .seg span:first-child{background:var(--surface);color:var(--fg)}
+.painsec .row{display:flex;justify-content:space-between;gap:10px;background:var(--soft);border-radius:10px;padding:8px 12px;font-size:13px}
+.painsec .row b{font-weight:600}
+.painsec .row span{color:var(--muted);white-space:nowrap}
+.opt.pick{display:block;width:100%;background:transparent;text-align:left;cursor:pointer;font:inherit;color:inherit}
+.hero h3{font-size:clamp(30px,6.4vw,46px);line-height:1.06;font-weight:800;letter-spacing:-.02em;margin:0;text-wrap:balance}
+.hero .acc{color:var(--accent)}
+.hero .sub{color:var(--muted);max-width:52ch}
+.hero .cta{background:var(--accent);color:var(--on-accent);border-radius:999px;padding:9px 18px;font-weight:700;font-size:14px}
+.hero .cap{font-size:13px;color:var(--muted)}
+.hero.small{padding:22px 14px;gap:10px}
+.hero.small h3{font-size:23px}
+.hero.small .sub{font-size:13px}
+.hero.small .cta{font-size:11px;padding:6px 12px}
+.timer{display:flex;align-items:center;gap:12px;font-weight:700}
+.timer .n{font-size:28px;font-variant-numeric:tabular-nums;color:var(--accent);min-width:2ch}
+.hidden-note{text-align:center;padding:48px 16px}
+.frame{width:100%;height:70vh;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+.opt{position:relative;cursor:pointer;border:2px solid transparent;border-radius:22px;padding:4px;transition:border-color .15s}
+.opt[aria-pressed="true"]{border-color:var(--accent)}
+.opt .tag{display:inline-block;margin:6px 0 8px 10px;font-weight:800;font-size:13px;background:var(--fg);color:var(--bg);border-radius:999px;padding:2px 12px}
+.pain{display:block;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;font-size:17px;font-weight:700;cursor:pointer}
+.pain[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.pain small{display:block;font-size:12px;color:var(--muted);font-weight:600;margin-bottom:4px}
+.proto{font-size:13px;background:var(--accent-soft);border-radius:12px;padding:10px 14px}
+pre{white-space:pre-wrap;word-break:break-word;font-size:12px;background:var(--soft);border-radius:12px;padding:12px;max-height:40vh;overflow:auto}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <span class="logo"><i></i>Moriz</span>
+  <div class="bar" aria-hidden="true"><b id="bar"></b></div>
+  <span class="stepn" id="stepn"></span>
+</div></header>
+
+<main id="main"></main>
+
+<nav class="nav"><div class="nav-in">
+  <button class="btn ghost" id="back" type="button">Назад</button>
+  <button class="btn" id="next" type="button">Дальше</button>
+</div></nav>
+
+<script>
+/* ---- Варианты лендингов ---- */
+const V = {
+  1:{file:"landing-1.html", h1:'Порядок в делах, <span class="acc">который держится сам</span>',
+     sub:"Moriz подключается к вашим CRM, почте и таблицам, сам собирает задачи, сроки и договорённости и каждое утро показывает, что застряло и что горит. Без ручного ввода и программистов.",
+     cap:"Покажем, что можно не делать руками. Бесплатно, около 30 минут",
+     pain:'Ваши конкуренты тоже тонут в рутине. <span class="acc">Вопрос, кто выберется первым</span>',
+     painlead:"Ниже — задачи, которые есть в каждой компании. И то, сколько они занимают с Moriz."},
+  2:{file:"landing-2.html", h1:'Компания растёт, <span class="acc">а порядок остаётся</span>',
+     sub:"Moriz сам собирает данные из CRM, почты и таблиц в смарт-дашборд для руководителя и одно окно для команды. Клиентов становится больше, а ручной работы — нет.",
+     cap:"Уйдёте с планом: что автоматизировать и с чего начать",
+     pain:'Чтобы расти дальше, вам нужен второй вы. <span class="acc">Или Moriz</span>',
+     painlead:"Сроки, договорённости, кто кого ждёт — сейчас всё это держится на вас. С каждым новым клиентом этого становится больше."},
+  3:{file:"landing-3.html", h1:'Один смарт-дашборд, <span class="acc">в котором видно, что застряло</span>',
+     sub:"Moriz сам собирает задачи, сроки и договорённости из CRM, почты и таблиц. Руководитель каждое утро видит, что горит и кто кого ждёт, а команда работает в одном окне.",
+     cap:"Уйдёте со списком того, что можно автоматизировать · бесплатно, около 30 минут",
+     pain:'Деньги теряются в мелочах: <span class="acc">счёт без ответа, КП через три дня, забытый акт</span>',
+     painlead:"Ни одна из этих задач не кажется срочной. Но именно в них застревают бизнес-процессы."}
+};
+const LETTER = {1:"А",2:"Б",3:"В"};
+/* Куда отправлять ответы: Google Форма «Moriz — коридорный тест». Пусто — режим прототипа. */
+const ENDPOINT = "https://docs.google.com/forms/d/e/1FAIpQLSe4BEqyjdg5-YdBJPYNQEXOhuVS6tdh6v4slRViFHxuerbGkA/formResponse";
+const ENTRY = {
+  variant:"1083468938", by:"1862610997", own:"1746173103", routine:"888304951",
+  q_offer:"1764863653", q_remember:"993071665", q_more:"1324535840",
+  q_interest:"1564230909", q_boring:"2922806", q_book:"480190487", q_book_why:"1095276919",
+  h_clear:"1586645012", h_hook:"1301174397", h_why:"384271234",
+  p_best:"229394954", p_not:"925127117", p_why:"2045940113",
+  f_change:"1735264023", f_like:"1752456676"
+};
+const BY = new URLSearchParams(location.search).get("by") || "";
+
+/* Вариант: из ссылки ?v=1|2|3, иначе случайно. Запоминаем, чтобы при перезагрузке не сменился. */
+function store(k,v){ try{ v===undefined ? localStorage.removeItem(k) : localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+function load(k){ try{ return JSON.parse(localStorage.getItem(k)||"null"); }catch(e){ return null; } }
+const qv = new URLSearchParams(location.search).get("v");
+let variant = ["1","2","3"].includes(qv) ? +qv : (load("mz-variant") || (1 + Math.floor(Math.random()*3)));
+store("mz-variant", variant);
+
+let A = load("mz-answers") || {};   // ответы
+let step = load("mz-step") || 0;
+const save = () => { store("mz-answers", A); store("mz-step", step); };
+
+/* ---- хелперы разметки ---- */
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ta = (id,label,ph="") => `<div class="q"><label for="${id}">${label}</label><textarea id="${id}" data-k="${id}" placeholder="${esc(ph)}">${esc(A[id]||"")}</textarea></div>`;
+const chips = (id,label,opts,cls="") => `<div class="q"><span style="font-weight:600">${label}</span><div class="choices ${cls}" role="group" aria-label="${esc(label)}">${opts.map(o=>`<button type="button" class="chip" data-pick="${id}" data-val="${esc(o)}" aria-pressed="${A[id]===o}">${esc(o)}</button>`).join("")}</div></div>`;
+const multi = (id,label,opts,none) => { const sel = Array.isArray(A[id]) ? A[id] : []; return `<div class="q"><span style="font-weight:600">${label}</span><div class="choices" role="group" aria-label="${esc(label)}">${opts.concat([none]).map(o=>`<button type="button" class="chip" data-multi="${id}" data-none="${o===none}" data-val="${esc(o)}" aria-pressed="${sel.includes(o)}">${esc(o)}</button>`).join("")}</div></div>`; };
+const painBlock = v => `<div class="painsec"><h4>${V[v].pain}</h4><p class="lead">${V[v].painlead}</p><div class="seg"><span>Как сейчас</span><span>С Moriz</span></div><div class="row"><b>Вспомнить, что клиент обещал прислать акт до пятницы</b><span>вспомнили в понедельник</span></div><div class="row"><b>Проверить, кто из клиентов прислал документы</b><span>3 ч</span></div></div>`;
+const hero = (v,small) => `<div class="hero${small?" small":""}"><span class="eyebrow">Автоматизация бизнес-процессов с ИИ-агентом</span><h3>${V[v].h1}</h3><p class="sub" style="margin:0">${V[v].sub}</p><span class="cta">Разобрать мои процессы</span><span class="cap">${V[v].cap}</span></div>`;
+
+/* ---- шаги ---- */
+const STEPS = [
+  { // 0 приветствие
+    html: () => `<div class="stack">
+      <h1>Привет! Спасибо, что помогаете</h1>
+      <p>Это черновик сайта Moriz. Дизайн ещё будет меняться, на него можно не смотреть. Нам важно понять, ясно ли, что за продукт, и понятны ли тексты.</p>
+      <p class="muted">Займёт минут 10. Если что-то непонятно или скучно — так и пишите, это нам и нужно.</p>
+      ${chips("own","Вы владелец бизнеса или руководите командой?",["У меня свой бизнес","Руковожу командой или отделом","Нет, ни то ни другое"])}
+      ${multi("routine","Что из этого делаете вы или ваша команда хотя бы раз в неделю? Можно выбрать несколько",["Заполняем таблицы или CRM","Сверяем данные или документы","Напоминаем клиентам об оплате или документах","Выясняем у сотрудников, как идут задачи","Собираем отчёты"],"Ничего из этого")}
+    </div>`,
+    ok: () => !!A.own && Array.isArray(A.routine) && A.routine.length > 0 },
+  { // 1 сценарий
+    html: () => A.own==="У меня свой бизнес"
+      ? `<div class="stack"><h1>Представьте ситуацию</h1><div class="card"><p>Вспомните обычную рабочую неделю в вашей компании: заявки и клиенты, задачи сотрудников, оплаты, документы, переписка.</p><p>Представьте, что вы хотите тратить меньше времени на то, чтобы держать всё это под контролем, и ищете, что может помочь. В поиске вам попадается сайт Moriz.</p><p style="margin:0"><b>Смотрите на сайт как владелец: помогло бы это вам?</b></p></div></div>`
+      : A.own==="Руковожу командой или отделом"
+      ? `<div class="stack"><h1>Представьте ситуацию</h1><div class="card"><p>Вспомните свою обычную неделю как руководителя: задачи сотрудников, сроки, договорённости с клиентами и коллегами, отчёты наверх.</p><p>Представьте, что вы хотите меньше времени тратить на то, чтобы знать, кто что делает и как идут дела, и ищете, что может помочь. В поиске вам попадается сайт Moriz.</p><p style="margin:0"><b>Смотрите на сайт как руководитель: помогло бы это вам?</b></p></div></div>`
+      : `<div class="stack"><h1>Представьте, что это ваша компания</h1>
+        <p class="muted">Попробуйте на 10 минут побыть владельцем бизнеса. Чем лучше вы представите себя на этом месте, тем полезнее ответы.</p>
+        <div class="card">
+          <p><b>Вы владелец сервисной компании в Алматы.</b> Ремонтируете и обслуживаете кондиционеры и бытовую технику у клиентов дома и в офисах.</p>
+          <p><b>В команде 15 человек:</b> два менеджера принимают заявки, десять мастеров ездят по адресам, есть бухгалтер и кладовщик.</p>
+          <p><b>Компании 4 года.</b> За последний год клиентов стало почти вдвое больше. Заявки и оплаты ведутся в CRM, график выездов — в Excel, с мастерами и клиентами вы общаетесь в WhatsApp и Telegram.</p>
+          <p><b>Вы хотите расти дальше,</b> но не нанимать управляющего и не сидеть на телефоне до ночи.</p>
+          <p style="margin:0">Вечером вы ищете в интернете, чем можно упростить управление, и находите сайт Moriz.</p>
+        </div>
+        <p><b>Смотрите на сайт как владелец этой компании:</b> подошло бы это вам?</p></div>`,
+    ok: () => true },
+  { // 2 первый экран на 10 секунд
+    html: () => A.seen
+      ? `<div class="card hidden-note"><h2>Время вышло</h2><p class="muted" style="margin:0">Не возвращайтесь к экрану — переходите к вопросам.</p></div>`
+      : `<div class="stack" id="peek"><h1>Первое впечатление</h1><p>Сейчас покажем первый экран сайта на 10 секунд. Потом он скроется.</p><div><button class="btn" type="button" id="start">Показать</button></div></div>`,
+    ok: () => !!A.seen, after: setupPeek },
+  { // 3 вопросы о первом впечатлении
+    html: () => `<div class="stack"><h1>Не возвращаясь к экрану</h1>
+      ${ta("q_offer","Что, по-вашему, предлагает компания?")}
+      ${ta("q_remember","Что больше всего запомнилось?")}
+      ${ta("q_more","Захотелось узнать больше? Почему?")}</div>`,
+    ok: () => true },
+  { // 4 вся страница
+    html: () => `<div class="stack"><h1>Теперь пролистайте сайт</h1>
+      <p>В своём темпе. Когда закончите — нажмите «Дальше».</p>
+      <iframe class="frame" src="${V[variant].file}" title="Сайт Moriz"></iframe>
+      <p class="muted" style="font-size:13px">Неудобно в окне? <a href="${V[variant].file}" target="_blank" rel="noopener">Открыть в новой вкладке</a>.</p></div>`,
+    ok: () => true },
+  { // 5 вопросы о странице
+    html: () => `<div class="stack"><h1>Пара вопросов о сайте</h1>
+      ${ta("q_interest","Что заинтересовало больше всего?")}
+      ${ta("q_boring","На каком блоке стало скучно или непонятно?")}
+      ${chips("q_book","Насколько вероятно, что вы записались бы на бесплатный разбор? 1 — точно нет, 5 — точно да",["1","2","3","4","5"],"scale")}
+      ${ta("q_book_why","Почему?")}</div>`,
+    ok: () => !!A.q_book },
+  { // 6 сравнение первых экранов
+    html: () => `<div class="stack"><h1>Три варианта первого экрана</h1>
+      <p>Посмотрите на все три и выберите.</p>
+      ${[1,2,3].map(v=>`<div class="opt" aria-pressed="false"><span class="tag">${LETTER[v]}</span>${hero(v,true)}</div>`).join("")}
+      ${chips("h_clear","Какой заголовок самый понятный?",["А","Б","В"])}
+      ${chips("h_hook","Какой больше всего цепляет?",["А","Б","В"])}
+      ${ta("h_why","Почему?")}</div>`,
+    ok: () => !!A.h_clear && !!A.h_hook },
+  { // 7 сравнение боли
+    html: () => `<div class="stack"><h1>Три варианта второго экрана</h1>
+      <p>Какую из этих ситуаций вам сильнее всего хотелось бы решить? Нажмите на вариант.</p>
+      ${[1,2,3].map(v=>`<button type="button" class="opt pick" data-pick="p_best" data-val="${LETTER[v]}" aria-pressed="${A.p_best===LETTER[v]}"><span class="tag">${LETTER[v]}</span>${painBlock(v)}</button>`).join("")}
+      ${chips("p_not","А какая совсем не про вас?",["А","Б","В","Все про меня"])}
+      ${ta("p_why","Почему?")}</div>`,
+    ok: () => !!A.p_best },
+  { // 8 итог
+    html: () => `<div class="stack"><h1>И последнее</h1>
+      ${ta("f_change","Что бы вы изменили на странице в первую очередь?")}
+      ${ta("f_like","Что понравилось больше всего?")}</div>`,
+    ok: () => true },
+  { // 9 спасибо
+    html: () => `<div class="stack"><h1>Спасибо!</h1>
+      <p>Ваши ответы очень помогут.</p>
+      ${ENDPOINT ? (A.sendError ? `<p class="proto">Ответы не отправились — нет связи. <button class="btn ghost" type="button" id="resend">Отправить ещё раз</button></p>` : `<p class="muted">Ответы сохранены.</p>`)
+        : `<p class="proto">Это прототип: ответы пока никуда не отправляются и показаны ниже.</p><pre>${esc(JSON.stringify(payload(),null,2))}</pre>`}
+      ${ENDPOINT ? "" : `<div><button class="btn ghost" type="button" id="restart">Пройти заново</button></div>`}</div>`,
+    ok: () => true }
+];
+
+/* ---- первый экран на 10 секунд ---- */
+function setupPeek(){
+  const b = document.getElementById("start"); if(!b) return;
+  b.onclick = () => {
+    const box = document.getElementById("peek");
+    let n = 10;
+    box.innerHTML = `<div class="timer"><span class="n" id="n">10</span><span>секунд</span></div>${hero(variant)}`;
+    window.scrollTo({top:0});
+    const t = setInterval(() => {
+      n--; const el = document.getElementById("n"); if (el) el.textContent = n;
+      if (n <= 0) { clearInterval(t); A.seen = true; save(); render(); }
+    }, 1000);
+  };
+}
+
+/* ---- отрисовка ---- */
+function render(){
+  const S = STEPS[step];
+  document.getElementById("main").innerHTML = S.html();
+  document.getElementById("bar").style.width = (step/(STEPS.length-1)*100) + "%";
+  document.getElementById("stepn").textContent = step < STEPS.length-1 ? `Шаг ${step+1} из ${STEPS.length-1}` : "Готово";
+  document.querySelectorAll("textarea[data-k]").forEach(t => t.oninput = () => { A[t.dataset.k] = t.value; save(); });
+  document.querySelectorAll("[data-pick]").forEach(b => b.onclick = () => { A[b.dataset.pick] = b.dataset.val; save(); render(); });
+  document.querySelectorAll("[data-multi]").forEach(b => b.onclick = () => {
+    const k = b.dataset.multi, v = b.dataset.val, isNone = b.dataset.none === "true";
+    let sel = Array.isArray(A[k]) ? A[k].slice() : [];
+    if (sel.includes(v)) sel = sel.filter(x => x !== v);
+    else if (isNone) sel = [v];
+    else sel = sel.filter(x => x !== "Ничего из этого").concat(v);
+    A[k] = sel; save(); render();
+  });
+  const r = document.getElementById("restart"); if (r) r.onclick = () => { A = {}; step = 0; store("mz-variant"); variant = ["1","2","3"].includes(qv) ? +qv : 1 + Math.floor(Math.random()*3); store("mz-variant", variant); save(); render(); };
+  if (S.after) S.after();
+  const back = document.getElementById("back"), next = document.getElementById("next");
+  back.hidden = step === 0 || step === STEPS.length-1;
+  next.hidden = step === STEPS.length-1;
+  next.disabled = !S.ok();
+  next.textContent = step === STEPS.length-2 ? "Отправить" : "Дальше";
+}
+/* ---- отправка ответов ---- */
+function payload(){ return Object.assign({ variant: variant + " · " + {1:"Порядок",2:"Рост",3:"Дашборд"}[variant], by: BY }, A, { seen: undefined, sent: undefined, sendError: undefined }); }
+async function send(){
+  if (!ENDPOINT || A.sent) return;
+  try {
+    const p = payload(), body = new URLSearchParams();
+    for (const k in ENTRY) { const v = p[k]; if (v !== undefined && v !== "") body.append("entry." + ENTRY[k], Array.isArray(v) ? v.join("; ") : String(v)); }
+    await fetch(ENDPOINT, { method:"POST", mode:"no-cors", body });
+    A.sent = true; A.sendError = false;
+  } catch(e) { A.sendError = true; }
+  save(); render();
+}
+document.addEventListener("click", e => { if (e.target && e.target.id === "resend") send(); });
+document.getElementById("next").onclick = () => {
+  if (!STEPS[step].ok()) return;
+  const sending = step === STEPS.length-2;
+  step = Math.min(step+1, STEPS.length-1); save(); render(); window.scrollTo({top:0});
+  if (sending) send();
+};
+document.getElementById("back").onclick = () => { step = Math.max(step-1, 0); if (step===2) A.seen = A.seen; save(); render(); window.scrollTo({top:0}); };
+render();
+</script>
+</body>
+</html>
