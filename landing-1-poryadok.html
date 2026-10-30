@@ -81,27 +81,41 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 @media (max-width:760px){.steps{grid-template-columns:1fr 1fr}}
 @media (max-width:460px){.steps{grid-template-columns:1fr}}
 .newblock{background:var(--soft)}
-.cmp{overflow-x:auto;margin-top:28px;border-radius:18px;border:1px solid var(--line);background:var(--surface)}
-.cmp table{border-collapse:collapse;width:100%;min-width:640px;font-size:14px}
-.cmp th,.cmp td{padding:14px 16px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+.cmp{overflow-x:auto;margin-top:28px;border-radius:18px;border:1px solid var(--line);background:var(--surface);max-width:860px}
+.cmp table{border-collapse:collapse;width:100%;min-width:600px;font-size:14px;table-layout:fixed}
+.cmp th,.cmp td{padding:12px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
 .cmp thead th{font-size:13px;color:var(--muted);font-weight:700}
-.cmp tbody th{font-weight:700;width:22%}
+.cmp tbody th{font-weight:700}
+.cmp thead th:first-child{width:28%}
 .cmp .me{background:var(--me);color:var(--fg);font-weight:700}
 .cmp thead .me{color:var(--fg);font-size:16px;font-weight:800;white-space:nowrap}
 .cmp thead .me::before{content:"";display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--accent);margin-right:8px;vertical-align:-2px}
 .cmp tr:last-child th,.cmp tr:last-child td{border-bottom:0}
-.cmp .dots{letter-spacing:2px;font-size:15px}
+.cmp .dots{display:inline-flex;gap:5px;vertical-align:middle;color:var(--muted)}
+.cmp .dots i{width:10px;height:10px;border-radius:50%;border:1.5px solid currentColor;opacity:.5}
+.cmp .dots i.on{background:currentColor;opacity:1}
 .cmp .me .dots{color:var(--fg)}
 .cmp .yes{color:var(--good);font-weight:800}
 .cmp .no{color:var(--muted)}
-.price{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;margin-top:28px}
+.price{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:28px;align-items:stretch}
+.price .main .checks{gap:12px}
+.price .main > .btn{margin-top:auto}
+.price .flow li{padding-bottom:8px;margin-bottom:8px}
 .price .card{background:var(--surface);border:1px solid var(--line);padding:28px;gap:14px}
 .price .main{border:2px solid var(--accent)}
-.amount{font-size:40px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+@media (max-width:760px){.price{grid-template-columns:1fr}}
+.amount{font-size:40px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
 .amount small{font-size:16px;color:var(--muted);font-weight:600}
 .checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
 .checks li::before{content:"✓";color:var(--accent);font-weight:800;margin-right:8px}
-@media (max-width:760px){.price{grid-template-columns:1fr}}
+.flow{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0;counter-reset:f}
+.flow li{counter-increment:f;display:grid;grid-template-columns:28px 1fr;column-gap:12px;padding:0 0 10px;margin-bottom:10px;border-top:1px solid var(--line)}
+.flow li{border-top:0;border-bottom:1px solid var(--line)}
+.flow li:last-child{border-bottom:0;margin-bottom:0;padding-bottom:0}
+.flow li::before{content:counter(f);grid-row:span 2;width:28px;height:28px;border-radius:50%;background:var(--soft);color:var(--muted);font-weight:700;font-size:13px;display:grid;place-items:center}
+.flow b{font-size:15px}
+.flow span{font-size:13px;color:var(--muted)}
+
 form{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;margin-top:24px;width:100%;max-width:720px}
 input{border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:14px 18px;font:500 15px var(--body);min-width:0}
 @media (max-width:640px){form{grid-template-columns:1fr}}
@@ -112,7 +126,7 @@ footer{padding-block:32px;color:var(--muted);font-size:13px;border-top:1px solid
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
-<div class="banner"><div class="wrap"><b>Драфт Moriz · лендинг 1 из 3 — «Порядок»</b><span>Отличаются только первый экран и блок боли. Цифры «__» — уточнить.</span></div></div>
+<div class="banner"><div class="wrap"><b>Драфт Moriz · лендинг 1 из 3 — «Порядок»</b><span>Отличаются только первый экран и блок боли.</span></div></div>
 
 <nav><div class="wrap"><div class="navbar">
   <span class="logo"><i></i>Moriz</span>
@@ -198,7 +212,7 @@ footer{padding-block:32px;color:var(--muted);font-size:13px;border-top:1px solid
       <thead><tr><th></th><th>Таблицы и мессенджеры</th><th>ИИ-чат</th><th>CRM</th><th class="me">Moriz</th></tr></thead>
       <tbody>
         <tr><th>Кто вносит данные</th><td>Команда</td><td>Вы</td><td>Менеджеры</td><td class="me">Moriz сам</td></tr>
-        <tr><th>Делает за вас</th><td><span class="dots">●○○○○</span></td><td><span class="dots">●●○○○</span></td><td><span class="dots">●●○○○</span></td><td class="me"><span class="dots">●●●●●</span></td></tr>
+        <tr><th>Делает за вас</th><td><span class="dots" aria-label="1 из 5"><i class="on"></i><i></i><i></i><i></i><i></i></span></td><td><span class="dots" aria-label="2 из 5"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></td><td><span class="dots" aria-label="2 из 5"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></td><td class="me"><span class="dots" aria-label="5 из 5"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></td></tr>
         <tr><th>Помнит договорённости из чатов</th><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="me"><span class="yes">✓</span></td></tr>
         <tr><th>Сводка без вашей просьбы</th><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="me"><span class="yes">✓</span></td></tr>
         <tr><th>Видно всей команде</th><td><span class="yes">✓</span></td><td class="no">✗</td><td><span class="yes">✓</span></td><td class="me"><span class="yes">✓</span></td></tr>
@@ -207,8 +221,6 @@ footer{padding-block:32px;color:var(--muted);font-size:13px;border-top:1px solid
       </tbody>
     </table>
   </div>
-  <p class="caption" style="margin-top:10px">Точки — оценка команды Moriz по типовой настройке</p>
-  <div class="btns" style="justify-content:flex-start;margin-top:20px"><span class="caption" style="align-self:center">Уже работаете в CRM? Moriz начнёт с неё.</span><a class="btn btn-main" href="#form">Разобрать мои процессы →</a></div>
 </div></section>
 
 <section><div class="wrap">
@@ -228,7 +240,7 @@ footer{padding-block:32px;color:var(--muted);font-size:13px;border-top:1px solid
   <div class="steps">
     <div class="card"><span class="n">Разбор, полчаса</span><span>Выясняем, откуда вы берёте цифры и где теряется время</span></div>
     <div class="card"><span class="n">Дашборд на ваших данных</span><span>Собираем по выгрузке — ещё до подключения систем</span></div>
-    <div class="card"><span class="n">Подключение</span><span>Подключаем системы, согласуем формулы и доступы — примерно за 2 недели после разбора</span></div>
+    <div class="card"><span class="n">Подключение</span><span>Подключаем системы, согласуем формулы и доступы</span></div>
     <div class="card"><span class="n">Работа команды</span><span>Команда работает в одном окне. Дальше всё меняется через чат</span></div>
   </div>
 </div></section>
@@ -241,7 +253,7 @@ footer{padding-block:32px;color:var(--muted);font-size:13px;border-top:1px solid
   <div class="price">
     <div class="card main">
       <span class="caption">Подписка</span>
-      <div class="amount">от __ ₸ <small>в месяц</small></div>
+      <div class="amount">от&nbsp;41&#8239;900&nbsp;₸ <small>в месяц</small></div>
       <ul class="checks">
         <li>Смарт-дашборд и ИИ-агент</li>
         <li>Подключение ваших систем — бесплатно</li>
@@ -249,13 +261,17 @@ footer{padding-block:32px;color:var(--muted);font-size:13px;border-top:1px solid
         <li>Без доплат за модули</li>
         <li>Без минимального числа пользователей</li>
       </ul>
-      <a class="btn btn-main" href="#form" style="align-self:flex-start">Узнать точную цену</a>
+      <a class="btn btn-main" href="#form" style="align-self:flex-start">Рассчитать стоимость</a>
     </div>
     <div class="card">
       <span class="caption">Перед покупкой</span>
       <h3>Дашборд на вашей выгрузке</h3>
-      <p class="lead" style="font-size:16px">Соберём по выгрузке из ваших систем и покажем до оплаты. Первый процесс заработает примерно через 2 недели после разбора.</p>
-      <p class="caption">Точную сумму назовём после разбора — она зависит от объёма работы, а не от модулей.</p>
+      <p class="lead" style="font-size:16px">Соберём по выгрузке из ваших систем и покажем до оплаты.</p>
+      <ol class="flow">
+        <li><b>Разбор процессов</b><span>Бесплатно, около 30 минут</span></li>
+        <li><b>Дашборд на ваших данных</b><span>Собираем по выгрузке</span></li>
+        <li><b>Решение о покупке</b><span>Когда увидели результат</span></li>
+      </ol>
     </div>
   </div>
 </div></section>
@@ -274,13 +290,12 @@ footer{padding-block:32px;color:var(--muted);font-size:13px;border-top:1px solid
 <section id="faq"><div class="wrap">
   <h2>Частые вопросы</h2>
   <div style="margin-top:16px">
-    <details><summary>Сколько стоит автоматизация бизнес-процессов с Moriz?</summary><p>Подписка от __ ₸ в месяц. Подключение бесплатное, без доплат за модули и без минимального числа пользователей.</p></details>
+    <details><summary>Сколько стоит автоматизация бизнес-процессов с Moriz?</summary><p>Подписка от&nbsp;41&#8239;900&nbsp;₸ в месяц. Подключение бесплатное, без доплат за модули и без минимального числа пользователей.</p></details>
     <details><summary>Что если сотрудники не заполняют CRM?</summary><p>Moriz собирает данные из почты, переписки и таблиц, поэтому картина не зависит от того, что внесли вручную.</p></details>
     <details><summary>Нужно ли менять CRM или 1С?</summary><p>Нет. Moriz работает поверх систем, которые уже есть в компании. 1С — через выгрузки.</p></details>
     <details><summary>Можно ли попробовать до покупки?</summary><p>Да: соберём дашборд на вашей выгрузке и покажем до оплаты.</p></details>
   </div>
 </div></section>
-
 <footer><div class="wrap">Moriz · лендинг «Порядок» · драфт для обсуждения, 29.10.2026</div></footer>
 
 <script>
