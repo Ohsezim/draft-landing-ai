@@ -135,12 +135,13 @@ const BY = new URLSearchParams(location.search).get("by") || "";
 function store(k,v){ try{ v===undefined ? localStorage.removeItem(k) : localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
 function load(k){ try{ return JSON.parse(localStorage.getItem(k)||"null"); }catch(e){ return null; } }
 const qv = new URLSearchParams(location.search).get("v");
-let variant = ["1","2","3"].includes(qv) ? +qv : (load("mz-variant") || (1 + Math.floor(Math.random()*3)));
-store("mz-variant", variant);
+let variant = ["1","2","3"].includes(qv) ? +qv : (load("mz2-variant") || (1 + Math.floor(Math.random()*3)));
+store("mz2-variant", variant);
 
-let A = load("mz-answers") || {};   // ответы
-let step = load("mz-step") || 0;
-const save = () => { store("mz-answers", A); store("mz-step", step); };
+const key = k => "mz2-v" + variant + "-" + k;   // свой прогресс у каждого варианта
+let A = load(key("answers")) || {};   // ответы
+let step = load(key("step")) || 0;
+const save = () => { store(key("answers"), A); store(key("step"), step); };
 
 /* ---- хелперы разметки ---- */
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -177,10 +178,8 @@ const STEPS = [
         </div>
         <p><b>Смотрите на сайт как владелец этой компании:</b> подошло бы это вам?</p></div>`,
     ok: () => true },
-  { // 2 первый экран на 10 секунд
-    html: () => A.seen
-      ? `<div class="card hidden-note"><h2>Время вышло</h2><p class="muted" style="margin:0">Не возвращайтесь к экрану — переходите к вопросам.</p></div>`
-      : `<div class="stack" id="peek"><h1>Первое впечатление</h1><p>Сейчас покажем первый экран сайта на 10 секунд. Потом он скроется.</p><div><button class="btn" type="button" id="start">Показать</button></div></div>`,
+  { // 2 первый экран на 5 секунд
+    html: () => `<div class="stack" id="peek"><h1>Первое впечатление</h1><p>Сейчас покажем первый экран сайта на 5 секунд. Потом он скроется.</p><div><button class="btn" type="button" id="start">Показать</button></div></div>`,
     ok: () => !!A.seen, after: setupPeek },
   { // 3 вопросы о первом впечатлении
     html: () => `<div class="stack"><h1>Не возвращаясь к экрану</h1>
@@ -230,23 +229,29 @@ const STEPS = [
     ok: () => true }
 ];
 
-/* ---- первый экран на 10 секунд ---- */
+/* ---- первый экран на 5 секунд ---- */
+let peekStop = null;
 function setupPeek(){
   const b = document.getElementById("start"); if(!b) return;
   b.onclick = () => {
     const box = document.getElementById("peek");
-    let n = 10;
-    box.innerHTML = `<div class="timer"><span class="n" id="n">10</span><span>секунд</span></div>${hero(variant)}`;
+    let n = 5;
+    box.innerHTML = `<div class="timer"><span class="n" id="n">5</span><span>сек</span></div>${hero(variant)}`;
     window.scrollTo({top:0});
     const t = setInterval(() => {
       n--; const el = document.getElementById("n"); if (el) el.textContent = n;
-      if (n <= 0) { clearInterval(t); A.seen = true; save(); render(); }
+      if (n <= 0) { peekStop(); A.seen = true; step = 3; save(); render(); window.scrollTo({top:0}); }
     }, 1000);
+    // свернули браузер или ушли в другое приложение — экран не увидели, показываем заново
+    const onHide = () => { if (document.hidden) { peekStop(); render(); } };
+    document.addEventListener("visibilitychange", onHide);
+    peekStop = () => { clearInterval(t); document.removeEventListener("visibilitychange", onHide); peekStop = null; };
   };
 }
 
 /* ---- отрисовка ---- */
 function render(){
+  if (peekStop) peekStop();
   const S = STEPS[step];
   document.getElementById("main").innerHTML = S.html();
   document.getElementById("bar").style.width = (step/(STEPS.length-1)*100) + "%";
@@ -261,7 +266,7 @@ function render(){
     else sel = sel.filter(x => x !== "Ничего из этого").concat(v);
     A[k] = sel; save(); render();
   });
-  const r = document.getElementById("restart"); if (r) r.onclick = () => { A = {}; step = 0; store("mz-variant"); variant = ["1","2","3"].includes(qv) ? +qv : 1 + Math.floor(Math.random()*3); store("mz-variant", variant); save(); render(); };
+  const r = document.getElementById("restart"); if (r) r.onclick = () => { A = {}; step = 0; store("mz2-variant"); variant = ["1","2","3"].includes(qv) ? +qv : 1 + Math.floor(Math.random()*3); store("mz2-variant", variant); save(); render(); };
   if (S.after) S.after();
   const back = document.getElementById("back"), next = document.getElementById("next");
   back.hidden = step === 0 || step === STEPS.length-1;
@@ -285,10 +290,10 @@ document.addEventListener("click", e => { if (e.target && e.target.id === "resen
 document.getElementById("next").onclick = () => {
   if (!STEPS[step].ok()) return;
   const sending = step === STEPS.length-2;
-  step = Math.min(step+1, STEPS.length-1); save(); render(); window.scrollTo({top:0});
+  step = Math.min(step+1, STEPS.length-1); if (step === 2 && A.seen) step = 3; save(); render(); window.scrollTo({top:0});
   if (sending) send();
 };
-document.getElementById("back").onclick = () => { step = Math.max(step-1, 0); if (step===2) A.seen = A.seen; save(); render(); window.scrollTo({top:0}); };
+document.getElementById("back").onclick = () => { step = Math.max(step-1, 0); if (step === 2 && A.seen) step = 1; save(); render(); window.scrollTo({top:0}); };
 render();
 </script>
 </body>
